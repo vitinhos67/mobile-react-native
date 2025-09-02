@@ -1,13 +1,20 @@
+import axios from 'axios';
 import Item from '../models/Item';
 
+const API_URL = 'https://jsonplaceholder.typicode.com/posts';
 class ItemService {
-  private items: Item[] = [
-    { id: '1', title: 'Item 1' },
-    { id: '2', title: 'Item 2' },
-  ];
+  async getAllItems(): Promise<Item[]> {
+    try {
+      const response = await axios.get(API_URL);
+      const items: Item[] = response.data.map((post: any) => ({
+        id: post.id.toString(),
+        title: post.title,
+      }));
 
-  getAllItems(): Item[] {
-    return this.items;
+      return items;
+    } catch (error) {
+      return [];
+    }
   }
 
   addItem(name: string): void {
@@ -15,7 +22,6 @@ class ItemService {
       id: Date.now().toString(),
       title: name,
     };
-    this.items.push(newItem);
   }
 }
 

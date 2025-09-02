@@ -1,14 +1,26 @@
 
 import Item from '@/models/Item';
-import { useState } from 'react';
+import ItemService from '@/services/ItemService';
+import { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 
 export const useItemController = () => {
-    const [items, setItems] = useState<Item[]>([
-        { id: '1', title: 'Item Exemplo 1' },
-        { id: '2', title: 'Item Exemplo 2' },
-    ]);
+    const [items, setItems] = useState<Item[]>([]);
 
+    useEffect(() => {
+        const fetchItems = async () => {
+            try {
+                const fetchedItems = await ItemService.getAllItems();
+                setItems(fetchedItems);
+            } catch (error) {
+                console.error("Erro ao buscar itens:", error);
+                Alert.alert("Erro", "Não foi possível carregar os itens.");
+                setItems([]);
+            }
+        };
+
+        fetchItems();
+    }, []);
     const [modalVisible, setModalVisible] = useState(false);
     const [editingItem, setEditingItem] = useState<Item | null>(null);
     const [inputText, setInputText] = useState('');
