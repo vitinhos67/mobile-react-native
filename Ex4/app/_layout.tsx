@@ -10,6 +10,7 @@ import {
   View
 } from 'react-native';
 import moment from 'moment'
+import {Button, PaperProvider} from 'react-native-paper';
 export default function App() {
   const controller = useItemController();
   const renderItem = ({ item }: { item: Item }) => (
@@ -22,13 +23,14 @@ export default function App() {
   );
 
   return (
+    <PaperProvider>
     <View style={ItemsStyles.container}>
-      <Text>Horário de Brasília: {moment().format('HH:mm:ss')}</Text>
+      <Text>Horário: {moment().format('HH:mm:ss')}</Text>
       <Text style={ItemsStyles.title}>Lista de Itens</Text>
 
-      <TouchableOpacity style={ItemsStyles.addButton} onPress={controller.openAddModal}>
-        <Text>Adicionar Item</Text>
-      </TouchableOpacity>
+      <Button mode="contained" onPress={controller.openAddModal} style={{ marginBottom: 16 }}>
+        Adicionar Item
+      </Button>
 
       <FlatList
         data={controller.items}
@@ -38,5 +40,6 @@ export default function App() {
 
       {AddProduct(controller, ItemsStyles)}
     </View>
+    </PaperProvider>
   );
 }
