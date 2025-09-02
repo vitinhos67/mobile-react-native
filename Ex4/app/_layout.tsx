@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-
+import moment from 'moment'
 export default function App() {
   const controller = useItemController();
   const renderItem = ({ item }: { item: Item }) => (
@@ -23,6 +23,7 @@ export default function App() {
 
   return (
     <View style={ItemsStyles.container}>
+      <Text>Horário de Brasília: {moment().format('HH:mm:ss')}</Text>
       <Text style={ItemsStyles.title}>Lista de Itens</Text>
 
       <TouchableOpacity style={ItemsStyles.addButton} onPress={controller.openAddModal}>
