@@ -1,45 +1,30 @@
 import AddProduct from '@/components/AddProduct';
-import { useItemController } from '@/controllers/ItemController';
-import Item from '@/models/Item';
-import { ItemsStyles } from '@/styles/item.style';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import React from 'react';
-import {
-  FlatList,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native';
-import moment from 'moment'
-import {Button, PaperProvider} from 'react-native-paper';
-export default function App() {
-  const controller = useItemController();
-  const renderItem = ({ item }: { item: Item }) => (
-    <TouchableOpacity
-      style={ItemsStyles.item}
-      onPress={() => controller.openEditModal(item)}
+import { Text, View } from 'react-native';
+import { Button, PaperProvider } from 'react-native-paper';
+
+const Drawer = createDrawerNavigator();
+
+const HomeScreen = ({ navigation }: any) => (
+  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <Text>Home</Text>
+    <Button
+      mode="contained"
+      onPress={() => navigation.navigate('AddProduct')}
     >
-      <Text>{item.title}</Text>
-    </TouchableOpacity>
-  );
+      Ir para produtos
+    </Button>
+  </View>
+);
 
+export default function App() {
   return (
-    <PaperProvider>
-    <View style={ItemsStyles.container}>
-      <Text>Horário: {moment().format('HH:mm:ss')}</Text>
-      <Text style={ItemsStyles.title}>Lista de Itens</Text>
-
-      <Button mode="contained" onPress={controller.openAddModal} style={{ marginBottom: 16 }}>
-        Adicionar Item
-      </Button>
-
-      <FlatList
-        data={controller.items}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-      />
-
-      {AddProduct(controller, ItemsStyles)}
-    </View>
-    </PaperProvider>
+      <PaperProvider>
+        <Drawer.Navigator initialRouteName="Home">
+          <Drawer.Screen name="Home" component={HomeScreen} />
+          <Drawer.Screen name="AddProduct" component={AddProduct} />
+        </Drawer.Navigator>
+      </PaperProvider>
   );
 }
